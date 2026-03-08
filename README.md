@@ -1,71 +1,135 @@
-# 10x Analyst — Agentic Analysis Swarm
+<p align="center">
+  <img src="https://10x.in/logo.png" alt="10x.in" width="120" />
+</p>
 
-> Built with [10x-Skill-Builder](https://10x.in) — Production-quality AI skills for every platform.
+<h1 align="center">10x-Analyst</h1>
 
-A multi-agent Claude Code plugin that transforms raw data into insights, reports, and interactive dashboards. Five specialist agents coordinate through an orchestrator to deliver end-to-end data analysis automation.
+<p align="center">
+  <strong>Agentic Analysis Automation Swarm</strong><br/>
+  A proprietary multi-agent Claude Code plugin for end-to-end data analysis automation
+</p>
 
-## Input / Output
+<p align="center">
+  <a href="https://10x.in">Website</a> &middot;
+  <a href="#quick-start">Quick Start</a> &middot;
+  <a href="#commands">Commands</a> &middot;
+  <a href="#architecture">Architecture</a>
+</p>
 
+---
+
+> **Proprietary Software** — This plugin is the intellectual property of [10x.in](https://10x.in) and is developed, maintained, and owned by the **10x Team**. All rights reserved. Unauthorized reproduction, distribution, or commercial use without explicit written permission from 10x.in is strictly prohibited. See [LICENSE](#license) for details.
+
+---
+
+## What is 10x-Analyst?
+
+**10x-Analyst** is a production-grade Claude Code plugin built by the 10x Team that transforms raw data into actionable insights, comprehensive reports, and interactive dashboards — fully automated through a coordinated swarm of five specialist AI agents.
+
+Drop your data in, run one command, and get:
+- Cleaned & profiled datasets
+- Statistical analysis with EDA, correlations, and KPIs
+- Publication-ready charts and visualizations
+- Structured Markdown reports
+- Interactive HTML dashboards
+- Business recommendations and strategic action items
+
+## Quick Start
+
+```bash
+# 1. Place your data files in the input directory
+#    input/my-dataset/data.csv
+
+# 2. Run the full analysis pipeline
+/10x-analyst:analyze my-dataset
+
+# 3. Find all results in output/my-dataset/
 ```
-10x-analyst/
-├── input/                      # PUT YOUR DATA HERE
-│   └── shopify-data/           # Example dataset (included)
-│       ├── customers.csv
-│       ├── orders.csv
-│       ├── order_items.csv
-│       ├── products.csv
-│       └── price_changes.csv
-│
-└── output/                     # ALL RESULTS GO HERE (auto-created)
-    └── shopify-data/           # One folder per dataset
-        ├── report.md
-        ├── dashboard.html
-        ├── data-profile.md
-        ├── cleaning-log.md
-        ├── insights.json
-        ├── cleaned-data/
-        └── charts/
+
+A **demo Shopify e-commerce dataset** is included out of the box:
+
+```bash
+/10x-analyst:analyze shopify-data
 ```
-
-**To analyze new data:** drop your folder into `input/` and run the command with the folder name.
-
-## Agent Swarm
-
-| Agent | Specialty | Model Tier |
-|-------|-----------|-----------|
-| Data Engineer | Ingest, profile, clean, transform | Haiku (fast) |
-| Statistician | EDA, correlations, RFM, KPIs | Sonnet (balanced) |
-| Visualizer | Charts, plots, HTML dashboards | Haiku (fast) |
-| Reporter | Markdown reports with findings | Sonnet (balanced) |
-| Strategist | Business recommendations & priorities | Sonnet (balanced) |
 
 ## Commands
 
-```bash
-/10x-analyst:analyze   shopify-data                  # Full pipeline
-/10x-analyst:profile   shopify-data                  # Data profiling only
-/10x-analyst:clean     shopify-data                  # Cleaning only
-/10x-analyst:query     shopify-data "Top products?"  # Ask a question
-/10x-analyst:visualize shopify-data "revenue trend"  # Generate charts
-/10x-analyst:report    shopify-data                  # Markdown report
-/10x-analyst:dashboard shopify-data                  # HTML dashboard
+| Command | Description |
+|---------|-------------|
+| `/10x-analyst:analyze` | Full agentic pipeline — ingest, clean, analyze, visualize, report, dashboard |
+| `/10x-analyst:profile` | Data profiling and quality assessment |
+| `/10x-analyst:clean` | Data cleaning and transformation |
+| `/10x-analyst:query` | Ask natural language questions about your data |
+| `/10x-analyst:visualize` | Generate charts and visualizations |
+| `/10x-analyst:report` | Generate a comprehensive Markdown analysis report |
+| `/10x-analyst:dashboard` | Build a standalone interactive HTML dashboard |
+
+Every command takes a **dataset name** as argument and reads from `input/<dataset>/`, writing results to `output/<dataset>/`.
+
+## Architecture
+
+10x-Analyst coordinates **5 specialist agents** through an orchestrator pipeline:
+
+```
+                        User Request
+                             │
+                             ▼
+                   ┌───────────────────┐
+                   │   ORCHESTRATOR    │
+                   │  (Command Router) │
+                   └────────┬──────────┘
+                            │
+         ┌──────┬───────────┼───────────┬──────────┐
+         ▼      ▼           ▼           ▼          ▼
+    ┌─────────┐┌──────────┐┌──────────┐┌────────┐┌──────────┐
+    │  Data   ││  Stats   ││Visualizer││Reporter││Strategist│
+    │ Engineer││  ician   ││          ││        ││          │
+    └────┬────┘└────┬─────┘└────┬─────┘└───┬────┘└────┬─────┘
+         │          │           │           │          │
+         ▼          ▼           ▼           ▼          ▼
+      Clean &    EDA &      Charts &    Markdown   Business
+      Profile    Stats      Dashboard    Report    Actions
 ```
 
-Every command reads from `input/<dataset>/` and writes to `output/<dataset>/`.
+### Agent Responsibilities
 
-## Model Compatibility
+| Agent | Role |
+|-------|------|
+| **Data Engineer** | Ingest, profile, clean, and transform raw data files |
+| **Statistician** | Exploratory data analysis, correlations, distributions, statistical tests, RFM segmentation |
+| **Visualizer** | Matplotlib/Seaborn charts, Chart.js interactive HTML dashboards |
+| **Reporter** | Assemble all findings into structured, publication-ready Markdown reports |
+| **Strategist** | Interpret findings and generate business recommendations & prioritized action items |
 
-Designed to work across all Claude model sizes:
+### Pipeline Flow
+
+| Command | Agent Pipeline |
+|---------|---------------|
+| `:analyze` | Data Engineer → Statistician → Visualizer → Reporter → Strategist |
+| `:profile` | Data Engineer |
+| `:clean` | Data Engineer |
+| `:query` | Data Engineer → Statistician → Strategist |
+| `:visualize` | Data Engineer → Visualizer |
+| `:report` | Data Engineer → Statistician → Reporter → Strategist |
+| `:dashboard` | Data Engineer → Statistician → Visualizer |
+
+### Model Strategy
 
 | Model | Best For | Why |
 |-------|----------|-----|
-| Haiku | `:profile`, `:clean`, `:visualize` | Fast, token-efficient — follows explicit scripts |
-| Sonnet | `:analyze`, `:report`, `:dashboard`, `:query` | Balanced reasoning for EDA + report writing |
-| Opus | Complex `:query`, deep `:analyze` | Maximum reasoning for hard business questions |
+| **Opus** | `:analyze`, complex `:query` | Maximum reasoning for deep analysis |
+| **Sonnet** | `:report`, `:dashboard`, `:query` | Balanced quality and speed |
+| **Haiku** | `:profile`, `:clean`, `:visualize` | Fast, token-efficient for scripted tasks |
 
-All instructions are explicit and step-by-step — smaller models follow the scripts, larger models add deeper reasoning on top.
+## Supported Data Formats
 
-## Plugin Structure
+| Format | Extensions | Engine |
+|--------|-----------|--------|
+| CSV | `.csv` | pandas `read_csv` |
+| Excel | `.xlsx`, `.xls` | pandas `read_excel` (openpyxl / xlrd) |
+| JSON | `.json` | pandas `read_json` / `json_normalize` |
+
+## Project Structure
 
 ```
 10x-analyst/
@@ -73,9 +137,14 @@ All instructions are explicit and step-by-step — smaller models follow the scr
 ├── CLAUDE.md                      # Orchestrator — routes commands to agents
 ├── README.md                      # This file
 ├── input/                         # Data input directory
-│   └── shopify-data/              # Demo dataset
-├── output/                        # Analysis output directory
-├── agents/                        # 5 specialist subagents
+│   └── shopify-data/              # Demo dataset (included)
+│       ├── customers.csv
+│       ├── orders.csv
+│       ├── order_items.csv
+│       ├── products.csv
+│       └── price_changes.csv
+├── output/                        # Analysis output directory (auto-created)
+├── agents/                        # 5 specialist subagent definitions
 │   ├── data-engineer.md
 │   ├── statistician.md
 │   ├── visualizer.md
@@ -104,14 +173,20 @@ All instructions are explicit and step-by-step — smaller models follow the scr
 
 - Python 3.8+
 - pandas, matplotlib, seaborn (auto-installed if missing)
-- openpyxl (for .xlsx), xlrd (for .xls)
+- openpyxl (for `.xlsx`), xlrd (for `.xls`)
 - Chart.js CDN (for dashboard interactivity)
 
-## Supported Data
+## License
 
-- **CSV** (.csv) — pandas read_csv
-- **Excel** (.xlsx, .xls) — pandas read_excel
-- **JSON** (.json) — pandas read_json / json_normalize
+**Proprietary Software** — Copyright (c) 2024-2026 [10x.in](https://10x.in). All rights reserved.
+
+This software and its associated documentation are the exclusive property of 10x.in. No part of this software may be reproduced, distributed, modified, or transmitted in any form or by any means without the prior written permission of 10x.in.
+
+For licensing inquiries, contact the 10x Team at [10x.in](https://10x.in).
 
 ---
-*Developed by [10x.in](https://10x.in) | 10x-Analyst v1.0.0*
+
+<p align="center">
+  <sub>Built with precision by the <strong>10x Team</strong> at <a href="https://10x.in">10x.in</a></sub><br/>
+  <sub>10x-Analyst v1.0.0</sub>
+</p>
